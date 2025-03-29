@@ -2,6 +2,7 @@
 const express = require('express')
 const app = express()
 
+app.set('view engine','ejs') // Set the view engine to ejs
 
 // app.get('/',(request,response)=>{
 //     res.send("Hello World")
@@ -13,13 +14,36 @@ const app = express()
   // OR
 app.get('/',(req,res)=>{  // Req means the request and res means the response
 //     res.send("Hello World")
-       res.send("<h1>Hello World!</h1>")
+      //  res.render("home.ejs")
+       //Or
+      //  res.render("home") // This will look for home.ejs file in the views folder
+
+      const data = {
+        name: "John Doe",
+        age: 25,
+        city: "New York"
+      } 
+      const nepal = {
+        name: "Nepal",
+        capital: "Kathmandu",
+        population: 21 // in millions
+      }
+      res.render("home.ejs",{
+        info: data,
+        info2: nepal
+      }) 
+      // OR
+      // res.render("home",{name:"John",age:25,city:"New York"}) // This will look for home.ejs file in the views folder
 })
 
 app.get('/about',(req,res)=>{ 
-    res.send("This is the About Page")
+    // res.render("test/about.ejs") 
+    // Or
+    res.render("test/about") // This will look for test/about.ejs file in the views folder
 })
 
+
+app.use(express.static('public/css'))  // It means that the css folder is in the public folder and it will look for the css file in the public folder
 
 app.listen(3000,()=>{
       console.log("Server is running on port 3000")
