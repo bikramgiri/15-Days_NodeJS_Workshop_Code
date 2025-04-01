@@ -3,6 +3,7 @@ const express = require('express')
 const app = express()
 
 app.set('view engine','ejs') // Set the view engine to ejs
+require("./model/index") // Import the database connection and models from the index.js file in the model folder
 
 // app.get('/',(request,response)=>{
 //     res.send("Hello World")
@@ -12,6 +13,7 @@ app.set('view engine','ejs') // Set the view engine to ejs
 //       res.send("Hello World")
 //   })
   // OR
+
 app.get('/',(req,res)=>{  // Req means the request and res means the response
 //     res.send("Hello World")
       //  res.render("home.ejs")
