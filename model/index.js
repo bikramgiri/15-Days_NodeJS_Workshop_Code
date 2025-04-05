@@ -1,11 +1,14 @@
 const {Sequelize, DataTypes} = require('sequelize') // Format: commonJS module
+const databaseConfig = require('../config/dbConfig')
+const makeBlogTable = require('./blogModel')
+const makeUserTable = require('./userModel')
 // import {Sequelize,DataTypes} from 'sequelize' // Format: ecmaScript module
 
-const sequelize = new Sequelize('haha', 'root', '', { // database name, username bydefault:root, password bydefault: empty string
-    host: 'localhost',  // database host 
-    port: 3306,        // database port bydefault: 3306
-    dialect: 'mysql',  // database dialect bydefault: mysql
-    operatorsAliases: false, // This option is deprecated and should not be used
+const sequelize = new Sequelize(databaseConfig.db, databaseConfig.username, databaseConfig.password, { // database name, username bydefault:root, password bydefault: empty string
+    host: databaseConfig.host,  // database host 
+    port: databaseConfig.port,        // database port bydefault: 3306
+    dialect: databaseConfig.dialect,  // database dialect bydefault: mysql
+    // operatorsAliases: false, // This option is deprecated and should not be used
     pool: { // Pool configuration
         max: 5, // Maximum number of connection in pool
         min: 0, // Minimum number of connection in pool
@@ -16,7 +19,7 @@ const sequelize = new Sequelize('haha', 'root', '', { // database name, username
 
 sequelize.authenticate() // Authenticate the connection to the database
     .then(() => {
-        console.log('Connection has been established successfully.') // Log a success message if the connection is successful
+        console.log('Database connection has been established successfully.') // Log a success message if the connection is successful
     })
     .catch(err => {
         console.error('Unable to connect to the database:', err) // Log an error message if the connection fails
@@ -26,8 +29,11 @@ sequelize.authenticate() // Authenticate the connection to the database
     db.Sequelize = Sequelize // Add Sequelize class to the db object  
     db.sequelize = sequelize // Add sequelize  to the db object
 
+    db.blogs = makeBlogTable(sequelize, DataTypes) // Call the makeBlogTable function to create the Blog model
+    db.users = makeUserTable(sequelize, DataTypes) // Call the makeUserTable function to create the User model
+
     db.sequelize.sync({force: false}).then(() => { // Sync the database with the models
-        console.log('Synced done!!.') // Log a message indicating that the database has been synced
+        console.log('Synced done!!') // Log a message indicating that the database has been synced
     })
 
 module.exports = db // Export the db object so that it can be used in other files
