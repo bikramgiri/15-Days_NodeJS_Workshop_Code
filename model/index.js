@@ -9,7 +9,7 @@ const sequelize = new Sequelize(databaseConfig.db, databaseConfig.username, data
     port: databaseConfig.port,        // database port bydefault: 3306
     dialect: databaseConfig.dialect,  // database dialect bydefault: mysql
     // operatorsAliases: false, // This option is deprecated and should not be used
-    pool: { // Pool configuration
+    pool: { 
         max: 5, // Maximum number of connection in pool
         min: 0, // Minimum number of connection in pool
         acquire: 30000, // Maximum time (in milliseconds) that pool will try to get connection before throwing error
@@ -35,7 +35,7 @@ sequelize.authenticate() // Authenticate the connection to the database
     db.sequelize.sync({force: false}).then(() => { // Sync the database with the models
         console.log('Synced done!!') // Log a message indicating that the database has been synced
     })
-
+ 
 module.exports = db // Export the db object so that it can be used in other files
 
 
