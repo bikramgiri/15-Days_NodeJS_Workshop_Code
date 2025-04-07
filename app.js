@@ -1,7 +1,13 @@
 require('dotenv').config() // Load environment variables from a .env file into process.env
 // const app = require('express')() // Import the express module and create an instance of it
 const express = require('express') // Import the express module
-const { blogs } = require('./model/index')
+const { blogs, sequelize } = require('./model/index')
+// const multer = require('./middleware/multerConfig').multer 
+// const storage = require('./middleware/multerConfig').storage
+// Or
+const {multer,storage} = require('./middleware/multerConfig') 
+const upload = multer({storage: storage}) 
+
 const app = express() // Create an instance of express
 
 
@@ -14,7 +20,7 @@ app.get("/create",(req,res)=>{ // Define a route for the /create URL
     res.render("create") // send a response when the /create route is accessed with the GET method
 })
 
-app.post("/create",async(req,res)=>{ // Define a route for the /create URL with the POST method
+app.post("/create",upload.single('image'), async(req,res)=>{ // Define a route for the /create URL with the POST method
   // const title = req.body.title // Get the title from the request body
   // const subtitle = req.body.subtitle // Get the subtitle from the request body
   // const description = req.body.description // Get the description from the request body
@@ -23,7 +29,8 @@ app.post("/create",async(req,res)=>{ // Define a route for the /create URL with 
   await blogs.create({
     title : title,
     subtitle : subtitle,
-    description : description
+    description : description,
+    image : req.file.filename // Get the filename of the uploaded image from the request file object
   })
   res.send("Blod added successfully")
 
