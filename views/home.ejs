@@ -22,62 +22,15 @@
 
     <!-- Main Content -->
     <div class="container">
-        <div class="card">
-            <img src="image1.jpg" alt="Image 1">
-            <h3>Title 1</h3>
-            <p class="published-date">Published on: April 8, 2025</p>
-            <p class="meta-description">This is a meta description of the article.</p>
-            <button class="read-more">Read More</button>
-        </div>
-        <!-- <div class="card">
-            <img src="image2.jpg" alt="Image 2">
-            <h3>Title 2</h3>
-            <p class="published-date">Published on: April 8, 2025</p>
-            <p class="meta-description">This is a meta description of the article.</p>
-            <button class="read-more">Read More</button>
-        </div>
-        <div class="card">
-            <img src="image3.jpg" alt="Image 3">
-            <h3>Title 3</h3>
-            <p class="published-date">Published on: April 8, 2025</p>
-            <p class="meta-description">This is a meta description of the article.</p>
-            <button class="read-more">Read More</button>
-        </div>
-        <div class="card">
-            <img src="image4.jpg" alt="Image 4">
-            <h3>Title 4</h3>
-            <p class="published-date">Published on: April 8, 2025</p>
-            <p class="meta-description">This is a meta description of the article.</p>
-            <button class="read-more">Read More</button>
-        </div>
-        <div class="card">
-            <img src="image5.jpg" alt="Image 5">
-            <h3>Title 5</h3>
-            <p class="published-date">Published on: April 8, 2025</p>
-            <p class="meta-description">This is a meta description of the article.</p>
-            <button class="read-more">Read More</button>
-        </div>
-        <div class="card">
-            <img src="image6.jpg" alt="Image 6">
-            <h3>Title 6</h3>
-            <p class="published-date">Published on: April 8, 2025</p>
-            <p class="meta-description">This is a meta description of the article.</p>
-            <button class="read-more">Read More</button>
-        </div>
-        <div class="card">
-            <img src="image7.jpg" alt="Image 7">
-            <h3>Title 7</h3>
-            <p class="published-date">Published on: April 8, 2025</p>
-            <p class="meta-description">This is a meta description of the article.</p>
-            <button class="read-more">Read More</button>
-        </div>
-        <div class="card">
-            <img src="image8.jpg" alt="Image 8">
-            <h3>Title 8</h3>
-            <p class="published-date">Published on: April 8, 2025</p>
-            <p class="meta-description">This is a meta description of the article.</p>
-            <button class="read-more">Read More</button>
-        </div> -->
+        <% blogs.forEach(function(blog){ %>
+            <div class="card">
+                <img src="<%- blog.image %>" alt="Image 1">
+                <h3> <%- blog.title %></h3>
+                <p class="published-date">Published on: <%- new Date(blog.createdAt).toDateString() %></p>
+                <p class="meta-description"> <%- blog.description %></p>
+                <button class="read-more"><a href="/blog/<%- blog.id %>">Read More</a></button>
+            </div>
+        <% }) %>
     </div>
 
     <!-- Footer -->

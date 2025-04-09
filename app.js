@@ -16,12 +16,29 @@ require("./model/index") // Import the database connection and models from the i
 app.use(express.urlencoded({extended:true})) // Middleware to parse URL-encoded data (form submissions), frontend and backend are same server
 
 app.get("/",async(req,res)=>{ 
-  const datas = await blogs.findAll()
+  const datas = await blogs.findAll() // blogs return on array of objects
     res.render("home", { 
       blogs : datas 
     }) 
 }
 )
+
+app.get("/blog/:id",async(req,res)=>{
+  const id = req.params.id 
+  const blog = await blogs.findByPk(id) // Find a blog by its primary key (id) and findByPk returns object
+    res.render("singleBlog",{blog : blog})
+})
+
+app.get("/delete/:id",async(req,res)=>{
+  const id = req.params.id 
+  await blogs.destroy({
+    where : {
+      id : id
+    }
+  })
+  res.redirect("/")
+})
+
 
 app.get("/create",(req,res)=>{ // Define a route for the /create URL
     res.render("create") // send a response when the /create route is accessed with the GET method
@@ -44,7 +61,8 @@ app.post("/create",upload.single('image'), async(req,res)=>{ // Define a route f
 
 })
 
-app.use(express.static('public/css'))  // It means that the css folder is in the public folder and it will look for the css file in the public folder
+app.use(express.static('public/css')) 
+app.use(express.static("./storage"))
 
 app.listen(3000,()=>{ // Start the server and listen on port 3000
       console.log("Server is running on port 3000") // Log a message to the console when the server is running
