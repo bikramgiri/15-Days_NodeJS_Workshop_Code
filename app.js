@@ -103,6 +103,28 @@ app.post("/register",async(req,res)=>{
   res.redirect("/login")
 })
 
+app.get("/login",(req,res)=>{
+  res.render("login")
+})
+
+
+app.post("/login",async(req,res)=>{
+  const {email,password} = req.body
+  const user = await users.findAll({
+    where : {
+      email : email
+    }
+  })
+  if(user.length == 0){ // Check if the user exists in the database
+    return res.status(404).send("User not found")
+  }
+  const isValid = bcrypt.compareSync(password,user[0].password) // Compare the provided password with the hashed password in the database
+  if(!isValid){
+    return res.status(401).send("Invalid password")
+  }
+  res.redirect("/")
+})
+
 app.use(express.static('public/css')) 
 app.use(express.static("./storage"))
 
