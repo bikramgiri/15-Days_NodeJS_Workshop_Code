@@ -91,7 +91,7 @@
     }
     
     .read-more {
-      background-color: black;
+      background-color: rgb(64, 232, 134);
       color: #fff;
       text-decoration-color: #fff;
       border: none;
@@ -102,7 +102,7 @@
     }
     
     .read-more:hover {
-      background-color: #328cdb;
+      background-color: #a4ccef;
     }
     
     /* Hover effect for cards */

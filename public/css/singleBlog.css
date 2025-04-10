@@ -52,7 +52,7 @@
       line-height: 1.5;
     }
     
-    .delete-button {
+    /* .delete-button {
       background-color: black;
       color: #fff;
       text-decoration-color: #fff;
@@ -65,4 +65,38 @@
     
     .delete-button:hover {
       background-color: #328cdb;
+    } */
+
+    .blog-actions {
+      display: flex;
+      gap: 10px;
     }
+    
+    .btn {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 0.95rem;
+      transition: background-color 0.3s ease;
+    }
+    
+    .edit-btn {
+      background-color: #1befcf;
+      color: white;
+    }
+    
+    .edit-btn:hover {
+      background-color: #81b3e8;
+    }
+    
+    .delete-btn {
+      background-color: #dc3545;
+      color: white;
+    }
+    
+    .delete-btn:hover {
+      background-color: #d8858d;
+    }
+

@@ -13,7 +13,12 @@
       <h2 class="blog-title"><%- blog.title %></h2>
       <p class="blog-date">Published on: <%- new Date(blog.createdAt).toDateString() %></p>
       <p class="blog-description"><%- blog.description %></p>
-      <button class="delete-button"><a href="/delete/<%- blog.id %>">Delete</a></button>
+      <!-- <button class="delete-button"><a href="/delete/<%- blog.id %>">Delete</a></button> -->
+      <!-- <button class="edit-button"><a href="/edit/<%- blog.id %>">Edit</a></button> -->
+      <div class="blog-actions">
+        <button class="btn edit-btn"><a href="/edit/<%- blog.id %>">Edit</a></button>
+        <button class="btn delete-btn"><a href="/delete/<%- blog.id %>">Delete</a></button>
+      </div>
     </div>
   </div>
 </body>

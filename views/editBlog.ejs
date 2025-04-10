@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Blog</title>
+    <link rel="stylesheet" href="/editBlog.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">My Website</div>
+            <ul class="nav-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Edit Form Section -->
+    <section class="form-container">
+        <h1>Edit Your Article</h1>
+        <form action="/update/<%- blog.id %>" method="post" enctype="multipart/form-data">
+            <label for="title">Title:</label>
+            <input type="text" id="title" name="title" value="<%- blog.title %>" required>
+
+            <label for="subtitle">Subtitle:</label>
+            <input type="text" id="subtitle" name="subtitle" value="<%- blog.subtitle %>" required>
+
+            <label for="description">Description:</label>
+            <textarea id="description" name="description" rows="4" required><%- blog.description %></textarea>
+
+            <label for="image">Update Image:</label>
+            <input type="file" id="image" name="image" accept="image/*">
+
+            <button type="submit">Update</button>
+        </form>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>© 2025 My Website. All Rights Reserved.</p>
+    </footer>
+</body>
+</html>

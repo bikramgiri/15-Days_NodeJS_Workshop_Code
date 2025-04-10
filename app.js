@@ -39,6 +39,32 @@ app.get("/delete/:id",async(req,res)=>{
   res.redirect("/")
 })
 
+app.get("/edit/:id",async(req,res)=>{ // Define a route for the /update/:id URL
+  const id = req.params.id // Get the id from the request parameters
+  const blog = await blogs.findByPk(id) // Find a blog by its primary key (id)
+  if (!blog) {
+    return res.status(404).send("Blog not found");
+}
+  res.render("editBlog",{blog : blog}) // Render the update view and pass the blog data to it
+})
+
+app.post("/update/:id",upload.single('image'),async(req,res)=>{ // Define a route for the /update/:id URL with the POST method
+  const id = req.params.id // Get the id from the request parameters
+  const {title,subtitle,description} = req.body // Destructure the title, subtitle, and description from the request body 
+  const update = {
+    title : title,
+    subtitle : subtitle,
+    description : description// Get the filename of the uploaded image from the request file object
+  }
+  if (req.file) {
+    update.image = req.file.filename; // Only update image if a new one is uploaded
+}
+await blogs.update(update, {
+    where: { id: id }
+});
+res.redirect(`/blog/${id}`); // Redirect to single blog page
+})
+
 
 app.get("/create",(req,res)=>{ // Define a route for the /create URL
     res.render("create") // send a response when the /create route is accessed with the GET method
@@ -57,7 +83,7 @@ app.post("/create",upload.single('image'), async(req,res)=>{ // Define a route f
     description : description,
     image : req.file.filename // Get the filename of the uploaded image from the request file object
   })
-  res.send("Blod added successfully")
+  res.send("Blog added successfully")
 
 })
 
