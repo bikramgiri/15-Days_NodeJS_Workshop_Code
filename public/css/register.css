@@ -1,0 +1,131 @@
+/* Reset and global styles */
+* {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f2f2f2;
+      color: #333;
+      line-height: 1.6;
+    }
+    
+    /* Navbar styling */
+    .navbar {
+      background-color: #333;
+      color: white;
+      padding: 1rem 0;
+    }
+    
+    .navbar .container {
+      max-width: 1200px;
+      margin: auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 1.5rem;
+    }
+    
+    .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+    
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 1.5rem;
+    }
+    
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      font-size: 1rem;
+      transition: color 0.3s ease;
+    }
+    
+    .nav-links a:hover {
+      color: #ffcc00;
+    }
+    
+    /* Form section styling */
+    .form-container {
+      background-color: white;
+      max-width: 500px;
+      margin: 3rem auto;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    }
+    
+    .form-container h1 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+      color: #444;
+    }
+    
+    form label {
+      display: block;
+      margin-bottom: 0.5rem;
+      margin-top: 1rem;
+      font-weight: bold;
+    }
+    
+    form input {
+      width: 100%;
+      padding: 0.6rem;
+      margin-bottom: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      transition: border-color 0.3s ease;
+    }
+    
+    form input:focus {
+      border-color: #007bff;
+      outline: none;
+    }
+    
+    /* Submit button */
+    .submit-btn {
+      width: 100%;
+      padding: 0.75rem;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      font-size: 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 0.5rem;
+      transition: background-color 0.3s ease;
+    }
+    
+    .submit-btn:hover {
+      background-color: #0056b3;
+    }
+    
+    /* Login link */
+    .login-link {
+      text-align: center;
+      margin-top: 1rem;
+    }
+    
+    .login-link a {
+      color: #007bff;
+      text-decoration: none;
+    }
+    
+    .login-link a:hover {
+      text-decoration: underline;
+    }
+    
+    /* Footer styling */
+    .footer {
+      text-align: center;
+      padding: 1rem 0;
+      background-color: #333;
+      color: white;
+      margin-top: 2rem;
+    }
+    

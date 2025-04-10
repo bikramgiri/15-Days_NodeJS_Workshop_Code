@@ -1,12 +1,13 @@
 require('dotenv').config() // Load environment variables from a .env file into process.env
 // const app = require('express')() // Import the express module and create an instance of it
 const express = require('express') // Import the express module
-const { blogs, sequelize } = require('./model/index')
+const { blogs, sequelize, users } = require('./model/index')
 // const multer = require('./middleware/multerConfig').multer 
 // const storage = require('./middleware/multerConfig').storage
 // Or
 const {multer,storage} = require('./middleware/multerConfig') 
 const upload = multer({storage: storage}) 
+const bcrypt = require('bcrypt') // Import the bcrypt module for password hashing
 
 const app = express() // Create an instance of express
 
@@ -85,6 +86,21 @@ app.post("/create",upload.single('image'), async(req,res)=>{ // Define a route f
   })
   res.send("Blog added successfully")
 
+})
+
+app.get("/register",(req,res)=>{
+  res.render("register")
+})
+
+app.post("/register",async(req,res)=>{
+  const {username,email,password} = req.body
+  await users.create({
+    username : username,
+    email : email,
+    password : bcrypt.hashSync(password, 10) // Hash the password using bcrypt with a salt rounds of 10
+  })
+  // res.send("User registered successfully")
+  res.redirect("/login")
 })
 
 app.use(express.static('public/css')) 
