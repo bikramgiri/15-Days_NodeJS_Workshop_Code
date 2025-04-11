@@ -7,6 +7,9 @@
   <link rel="stylesheet" href="/singleBlog.css">
 </head>
 <body>
+  <!-- Navbar -->
+  <%- include('./navbar.ejs') %>
+
   <div class="blog-card">
     <img src="http://localhost:3000/<%- blog.image %>" alt="Blog Image" class="blog-image">
     <div class="blog-content">
@@ -21,5 +24,9 @@
       </div>
     </div>
   </div>
+
+  <!-- footer -->
+  <%- include('./footer.ejs') %>
+
 </body>
 </html>

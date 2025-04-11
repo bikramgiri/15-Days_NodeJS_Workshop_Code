@@ -8,16 +8,7 @@
 </head>
 <body>
     <!-- Navbar -->
-    <nav class="navbar">
-        <div class="container">
-            <div class="logo">My Website</div>
-            <ul class="nav-links">
-                <li><a href="#">Home</a></li>
-                <li><a href="#">About</a></li>
-                <li><a href="#">Contact</a></li>
-            </ul>
-        </div>
-    </nav>
+    <%- include('./navbar.ejs') %>
 
     <!-- Form Section -->
     <section class="form-container">
@@ -38,5 +29,9 @@
             <button type="submit">Submit</button>
         </form>
     </section>
+
+    <!-- Footer -->
+    <%- include('./footer.ejs') %>
+
 </body>
 </html>

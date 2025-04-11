@@ -8,17 +8,7 @@
 </head>
 <body>
     <!-- Navigation Bar -->
-  <nav class="navbar">
-      <div class="logo">
-        <a href="#">MyWebsite</a>
-      </div>
-      <ul class="nav-links">
-        <li><a href="#">Home</a></li>
-        <li><a href="#">About</a></li>
-        <li><a href="#">Services</a></li>
-        <li><a href="#">Contact</a></li>
-      </ul>
-    </nav>
+    <%- include('./navbar.ejs') %>
 
     <!-- Main Content -->
     <div class="container">
@@ -34,8 +24,7 @@
     </div>
 
     <!-- Footer -->
-    <footer class="footer">
-        <p>&copy; 2025 Your Website. All Rights Reserved.</p>
-    </footer>
+    <%- include('./footer.ejs') %>
+
 </body>
 </html>

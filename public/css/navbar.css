@@ -1,0 +1,40 @@
+    /* Navigation Bar Styles */
+    .navbar {
+      background-color: #333;
+      color: #fff;
+      padding: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      top:0;
+      position: fixed;
+      width: 100%;
+    }
+    
+    .navbar .logo a {
+      color: #fff;
+      text-decoration: none;
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+    
+    .navbar .nav-links {
+      list-style: none;
+      display: flex;
+    }
+    
+    .navbar .nav-links li {
+      margin-left: 2rem;
+    }
+    
+    .navbar .nav-links a {
+      color: #fff;
+      text-decoration: none;
+      font-size: 1rem;
+      padding: 0.5rem;
+    }
+    
+    .navbar .nav-links a:hover {
+      background-color: #575757;
+      border-radius: 4px;
+    }
