@@ -1,5 +1,5 @@
 const { blogs, sequelize, users } = require('../model/index')
-const bcrypt = require('bcrypt') 
+const bcrypt = require('bcryptjs') 
 
 exports.registerPage = (req,res)=>{
       res.render("register")

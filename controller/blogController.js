@@ -1,5 +1,5 @@
 const { blogs, sequelize, users } = require('../model/index')
-const bcrypt = require('bcrypt') 
+const bcrypt = require('bcryptjs') 
 
 exports.homePage = async(req,res)=>{ 
   const datas = await blogs.findAll() // blogs return on array of objects

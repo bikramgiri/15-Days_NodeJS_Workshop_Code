@@ -7,7 +7,7 @@ const { blogs, sequelize, users } = require('./model/index')
 // Or
 const {multer,storage} = require('./middleware/multerConfig') 
 const upload = multer({storage: storage}) 
-const bcrypt = require('bcrypt') // Import the bcrypt module for password hashing
+const bcrypt = require('bcryptjs') // Import the bcrypt module for password hashing
 const { homePage, singleBlog, deleteBlog, editBlog, updateBlog, createBlogPage, createBlog } = require('./controller/blogController')
 const { login, loginPage, register, registerPage } = require('./controller/authController')
 
