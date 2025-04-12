@@ -3,7 +3,7 @@ const databaseConfig = {
   username: process.env.DB_USERNAME,
   password: process.env.PASSWORD,
   db: process.env.DB,
-  port: 3306,
+  port: 21946,
   dialect: 'mysql'
 }
 
