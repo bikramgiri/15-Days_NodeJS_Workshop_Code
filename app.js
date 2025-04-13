@@ -66,10 +66,12 @@ app.use((err, req, res, next) => {
       res.status(500).send('Something went wrong!');
   });
 
+  //* localhost
 // app.listen(3000,()=>{ // Start the server and listen on port 3000
 //       console.log("Server is running on port 3000") // Log a message to the console when the server is running
 // })
 
+//* production:
 // Start server only if database connects
 sequelize.authenticate()
     .then(() => {
