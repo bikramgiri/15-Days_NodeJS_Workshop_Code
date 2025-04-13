@@ -74,7 +74,8 @@ app.use((err, req, res, next) => {
 sequelize.authenticate()
     .then(() => {
         console.log('Database connection established');
-        app.listen(3000, () => {
+        const port = process.env.PORT || 3000;
+        app.listen(port, () => {
             console.log('Server is running on port 3000');
         });
     })
