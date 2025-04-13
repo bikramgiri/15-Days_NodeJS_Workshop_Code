@@ -6,7 +6,7 @@ const bcrypt = require('bcryptjs')
 //     res.render("home", { blogs : datas }) 
 // }
 
-xports.homePage = async (req, res) => {
+exports.homePage = async (req, res) => {
   try {
       const datas = await blogs.findAll();
       res.render('home', { blogs: datas });
