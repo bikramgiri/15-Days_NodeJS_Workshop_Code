@@ -8,6 +8,7 @@ const sequelize = new Sequelize(databaseConfig.db, databaseConfig.username, data
     host: databaseConfig.host,  // database host 
     port: databaseConfig.port,        // database port bydefault: 3306
     dialect: databaseConfig.dialect,  // database dialect bydefault: mysql
+    logging: false,
     // operatorsAliases: false, // This option is deprecated and should not be used
     pool: { 
         max: 5, // Maximum number of connection in pool

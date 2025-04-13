@@ -54,15 +54,34 @@ app.use(express.urlencoded({extended:true})) // Middleware to parse URL-encoded 
 // http://localhost:3000/ + /register
 // http://localhost:3000/ + /login
 
-app.use('',blogRoute)
-app.use('',authRoute)
+app.use('/',blogRoute)
+app.use('/',authRoute)
 
 app.use(express.static('public/css')) 
 app.use(express.static("./storage"))
 
-app.listen(3000,()=>{ // Start the server and listen on port 3000
-      console.log("Server is running on port 3000") // Log a message to the console when the server is running
-})
+// Error handling middleware
+app.use((err, req, res, next) => {
+      console.error(err.stack);
+      res.status(500).send('Something went wrong!');
+  });
+
+// app.listen(3000,()=>{ // Start the server and listen on port 3000
+//       console.log("Server is running on port 3000") // Log a message to the console when the server is running
+// })
+
+// Start server only if database connects
+sequelize.authenticate()
+    .then(() => {
+        console.log('Database connection established');
+        app.listen(3000, () => {
+            console.log('Server is running on port 3000');
+        });
+    })
+    .catch(err => {
+        console.error('Unable to connect to the database:', err);
+        process.exit(1);
+    });
 
 
 
