@@ -33,7 +33,15 @@ sequelize.authenticate() // Authenticate the connection to the database
     db.blogs = makeBlogTable(sequelize, DataTypes) // Call the makeBlogTable function to create the Blog model
     db.users = makeUserTable(sequelize, DataTypes) // Call the makeUserTable function to create the User model
 
-    db.sequelize.sync({force: false}).then(() => { // Sync the database with the models
+    // Realtionships
+    db.users.hasMany(db.blogs, {foreignKey: 'userId', as: 'blogs'}) // Define a one-to-many relationship between User and Blog models
+    db.blogs.belongsTo(db.users, {foreignKey: 'userId', as: 'user'})
+    
+    // Define a many-to-one relationship between Blog and User models
+    // db.blogs.belongsTo(db.users, {foreignKey: 'userId', as: 'user'}) // Define a many-to-one relationship between Blog and User models
+    // db.users.hasMany(db.blogs, {foreignKey: 'userId', as: 'blogs'}) // Define a one-to-many relationship between User and Blog models
+
+    db.sequelize.sync({force: false }).then(() => { // Sync the database with the models
         console.log('Synced done!!') // Log a message indicating that the database has been synced
     })
  

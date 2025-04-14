@@ -67,24 +67,24 @@ app.use((err, req, res, next) => {
   });
 
   //* localhost
-// app.listen(3000,()=>{ // Start the server and listen on port 3000
-//       console.log("Server is running on port 3000") // Log a message to the console when the server is running
-// })
+app.listen(3000,()=>{ // Start the server and listen on port 3000
+      console.log("Server is running on port 3000") // Log a message to the console when the server is running
+})
 
 //* production:
 // Start server only if database connects
-sequelize.authenticate()
-    .then(() => {
-        console.log('Database connection established');
-        const port = process.env.PORT || 3000;
-        app.listen(port, () => {
-            console.log('Server is running on port 3000');
-        });
-    })
-    .catch(err => {
-        console.error('Unable to connect to the database:', err);
-        process.exit(1);
-    });
+// sequelize.authenticate()
+//     .then(() => {
+//         console.log('Database connection established');
+//         const port = process.env.PORT || 3000;
+//         app.listen(port, () => {
+//             console.log('Server is running on port 3000');
+//         });
+//     })
+//     .catch(err => {
+//         console.error('Unable to connect to the database:', err);
+//         process.exit(1);
+//     });
 
 
 

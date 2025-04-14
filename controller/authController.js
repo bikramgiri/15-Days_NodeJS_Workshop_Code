@@ -35,20 +35,41 @@ exports.loginPage = (req,res)=>{
 
 exports.login = async(req,res)=>{
   const {email,password} = req.body
+
+  // ser side validation
+  // if(!email || !password){ // Check if all required fields are provided
+  //   return res.status(400).send("All fields are required")
+  // }
+
   const userExists = await users.findAll({
     where : {
       email : email
     }
   })
-  if(userExists.length == 0){ // Check if the user exists in the database
-    return res.status(404).send("User not found")
-  }
-  const isValid = bcrypt.compareSync(password,userExists[0].password) // Compare the provided password with the hashed password in the database
-  if(!isValid){
-    return res.status(401).send("Invalid password")
-  }
+  // if(userExists.length == 0){ // Check if the user exists in the database
+  //   return res.status(404).send("User not found")
+  // }
+  // const isValid = bcrypt.compareSync(password,userExists[0].password) // Compare the provided password with the hashed password in the database
+  // if(!isValid){
+  //   return res.status(401).send("Invalid password")
+  // }
  
   // or
+  
+  if(userExists.length == 0){ // Check if the user exists in the database
+    return res.status(404).send("User not found")
+  }else{
+    const userPassword = userExists[0].password // Get the hashed password from the database
+    const isValid = bcrypt.compareSync(password,userPassword) // Compare the provided password with the hashed password in the database
+  if(isValid){
+    // return res.status(200).send("Login successful") // If the password is valid, return a success response
+    res.redirect("/")
+  }else{
+    return res.status(401).send("Invalid password") // If the password is invalid, return an error response
+  }
+  }
+   
+
 
   // if(userExists.length > 0 && bcrypt.compareSync(password,userExists[0].password)){ // If the user exists and the password is correct
   //   req.session.user = userExists[0] // Store the user information in the session
@@ -57,7 +78,7 @@ exports.login = async(req,res)=>{
   //   res.send("Login failed")
   // }
 
-  res.redirect("/")
+  // res.redirect("/")
 }
 
 exports.logout = (req,res)=>{
