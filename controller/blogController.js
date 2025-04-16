@@ -117,7 +117,7 @@ exports.updateBlog = async (req, res) => {
 //       res.render("create") // send a response when the /create route is accessed with the GET method
 //   }
 
-exports.createBlogPage = (req, res) => {
+exports.createBlogPage = (req, res) => { 
   try {
       res.render('create');
   } catch (error) {
@@ -144,13 +144,18 @@ exports.createBlogPage = (req, res) => {
 // }
 
 exports.createBlog = async (req, res) => {
+    // console.log(req.user[0].id, "userID from createBlog")
+    const userId = req.user[0].id; // Get the user ID from the request object
+    // or
+    // const userId = req.userId // Get the user ID from the request object
   try {
       const { title, subtitle, description } = req.body;
       await blogs.create({
           title: title,
           subtitle: subtitle,
           description: description,
-          image: req.file.filename
+          image: req.file.filename,
+          userId: userId // Associate the blog with the user ID
       });
       res.redirect('/');
   } catch (error) {

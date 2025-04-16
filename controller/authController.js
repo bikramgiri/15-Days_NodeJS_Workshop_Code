@@ -58,20 +58,20 @@ exports.login = async(req,res)=>{
   // or
   
   if(userExists.length == 0){ // Check if the user exists in the database
-    return res.status(404).send("User not found")
+    return res.send("User not found")
   }else{
     const userPassword = userExists[0].password // Get the hashed password from the database
     const isValid = bcrypt.compareSync(password,userPassword) // Compare the provided password with the hashed password in the database
   if(isValid){
     // Generate a JWT token for the user
-    const token = jwt.sign({ id: userExists[0].id }, process.env.JWT_SECRETKEY, { expiresIn: '1d' }) // Create a JWT token with the user's ID and a secret key
+    const token = jwt.sign({ id: userExists[0].id }, process.env.JWT_SECRETKEY, { expiresIn: '5d' }) // Create a JWT token with the user's ID and a secret key
     // res.cookie("token", token)
     // Or
     res.cookie("token", token, { // Set the token as a cookie in the response
       httpOnly: true, // Make the cookie HTTP-only to prevent client-side access
       secure: true, // Set the secure flag to true to ensure the cookie is sent over HTTPS
       // secure: process.env.NODE_ENV === 'production', // Set the secure flag for production environment
-      expiresIn: '1d' // Set the expiration time for the cookie to 1 day
+      maxAge: 5*24 * 60 * 60 * 1000 // Set the cookie expiration time to 5 days
     })
 
     // return res.status(200).send("Login successful") 
