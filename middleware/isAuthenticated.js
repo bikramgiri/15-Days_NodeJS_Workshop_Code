@@ -9,9 +9,9 @@ exports.isAuthenticated = async (req, res, next) => {
   
   // Check if the token is provided or not in the request
   if (!token) {
-    return res.send("You must be logged In"); // If no token is found, return an error response
+    // return res.send("You must be logged In"); // If no token is found, return an error response
     // or
-//     return res.redirect("/login") // Redirect to the login page
+    return res.redirect("/login") // Redirect to the login page
   }
   // Verify the token using the secret key and check if it is valid
   // Promisify handle call back function to avoid callback hell 
@@ -25,13 +25,13 @@ exports.isAuthenticated = async (req, res, next) => {
     }
   })
   if (userExist.length == 0) { // If the user ID is not found in the database
-      res.send("User with that token does not exist"); // Return an error response
+      // res.send("User with that token does not exist"); // Return an error response
       // or
-      // return res.redirect("/login") // Redirect to the login page
+      return res.redirect("/login") // Redirect to the login page
   }else{
       req.user = userExist// Set the user ID in the request object for further use
       // or
-      // req.userId = userExist[0].id // Set the user ID in the request object for further use
+      req.userId = userExist[0].id // Set the user ID in the request object for further use
       // or
       // req.user.id = decryptedResult.id
 

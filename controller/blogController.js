@@ -8,7 +8,15 @@ const bcrypt = require('bcryptjs')
 
 exports.homePage = async (req, res) => {
   try {
-      const datas = await blogs.findAll();
+      const datas = await blogs.findAll({
+        include : 
+          { 
+            model: users, // Include the users model
+            as: 'user' // Include the users model
+        } 
+      });
+    //  console.log(datas, "datas from homePage")
+
       res.render('home', { blogs: datas });
   } catch (error) {
       console.error('Error in homePage:', error);
@@ -25,9 +33,18 @@ exports.homePage = async (req, res) => {
 exports.singleBlog = async (req, res) => {
   try {
       const id = req.params.id;
-      const blog = await blogs.findByPk(id);
+      const blog = await blogs.findByPk(id, {
+          include:
+              {
+                  model: users,
+                  as: 'user'
+              }
+      });
       if (!blog) return res.status(404).send('Blog not found');
-      res.render('singleBlog', { blog: blog });
+      res.render('singleBlog', { 
+        blog: blog,
+        user: req.user ? req.user[0] : null // Pass the authenticated user (or null if not logged in) 
+    });
   } catch (error) {
       console.error('Error in singleBlog:', error);
       res.status(500).send('Internal Server Error');
@@ -47,6 +64,14 @@ exports.singleBlog = async (req, res) => {
 exports.deleteBlog = async (req, res) => {
   try {
       const id = req.params.id;
+      const blog = await blogs.findByPk(id);
+    if (!blog) {
+      return res.status(404).send('Blog not found');
+    }
+    // Check if the authenticated user is the owner of the blog
+    if (blog.userId !== req.user[0].id) {
+      return res.status(403).send('You are not authorized to delete this blog');
+    }
       await blogs.destroy({ where: { id: id } });
       res.redirect('/');
   } catch (error) {
@@ -68,7 +93,13 @@ exports.editBlog = async (req, res) => {
   try {
       const id = req.params.id;
       const blog = await blogs.findByPk(id);
-      if (!blog) return res.status(404).send('Blog not found');
+      if (!blog){
+        return res.status(404).send('Blog not found');
+      } 
+      // Check if the authenticated user is the owner of the blog
+    if (blog.userId !== req.user[0].id) {
+        return res.status(403).send('You are not authorized to edit this blog');
+      }
       res.render('editBlog', { blog: blog });
   } catch (error) {
       console.error('Error in editBlog:', error);
@@ -96,6 +127,14 @@ exports.editBlog = async (req, res) => {
 exports.updateBlog = async (req, res) => {
   try {
       const id = req.params.id;
+      const blog = await blogs.findByPk(id);
+    if (!blog) {
+      return res.status(404).send('Blog not found');
+    }
+    // Check if the authenticated user is the owner of the blog
+    if (blog.userId !== req.user[0].id) {
+      return res.status(403).send('You are not authorized to update this blog');
+    }
       const { title, subtitle, description } = req.body;
       const update = {
           title: title,
@@ -164,4 +203,15 @@ exports.createBlog = async (req, res) => {
   }
 };
 
+exports.myBlogPage = async(req, res) => {
+// get this users blogs only
+const userId = req.userId;
+// find blogs of this userId
+const myBlogs = await blogs.findAll({
+    where: {
+        userId: userId
+    }
+})
+res.render("myBlogs.ejs",{myBlogs : myBlogs})
+}
 
