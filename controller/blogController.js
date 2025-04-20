@@ -1,4 +1,5 @@
 const { blogs, sequelize, users } = require('../model/index')
+const fs = require('fs') // File system module to delete files
 const bcrypt = require('bcryptjs') 
 
 // exports.homePage = async(req,res)=>{ 
@@ -73,6 +74,22 @@ exports.deleteBlog = async (req, res) => {
       return res.status(403).send('You are not authorized to delete this blog');
     }
       await blogs.destroy({ where: { id: id } });
+
+      // *Delete image when delete button is clicked
+      const oldImagePath = blog.image;
+      // console.log(oldImagePath)  // http://localhost:3000/1745145111359-Email Trick.jpg
+      const lengthOfUnwanted = 'http://localhost:3000/'.length;
+      // console.log(lengthOfUnwanted)
+      const fileNameInStorageFolder = oldImagePath.slice(lengthOfUnwanted);
+      console.log(fileNameInStorageFolder); // 1745145111359-Email Trick.jpg
+      fs.unlink('storage/' + fileNameInStorageFolder, (err) => {
+          if (err) {
+              console.error('Error deleting image:', err);
+          } else {
+              console.log('Image deleted successfully');
+          }
+        });
+
       res.redirect('/');
   } catch (error) {
       console.error('Error in deleteBlog:', error);
@@ -96,10 +113,10 @@ exports.editBlog = async (req, res) => {
       if (!blog){
         return res.status(404).send('Blog not found');
       } 
-      // Check if the authenticated user is the owner of the blog
-    if (blog.userId !== req.user[0].id) {
-        return res.status(403).send('You are not authorized to edit this blog');
-      }
+    //   // Check if the authenticated user is the owner of the blog
+    // if (blog.userId !== req.user[0].id) {
+    //     return res.status(403).send('You are not authorized to edit this blog');
+    //   }
       res.render('editBlog', { blog: blog });
   } catch (error) {
       console.error('Error in editBlog:', error);
@@ -127,24 +144,55 @@ exports.editBlog = async (req, res) => {
 exports.updateBlog = async (req, res) => {
   try {
       const id = req.params.id;
-      const blog = await blogs.findByPk(id);
+      const blog = await blogs.findByPk(id); 
     if (!blog) {
       return res.status(404).send('Blog not found');
     }
-    // Check if the authenticated user is the owner of the blog
-    if (blog.userId !== req.user[0].id) {
-      return res.status(403).send('You are not authorized to update this blog');
+
+    // Check new image is uploaded or not
+    const oldDatas = await blogs.findAll({
+      where: { id: id }
+    })
+    let fileUrl;
+    if(req.file) {
+      fileUrl = process.env.PROJECT_URL + req.file.filename; // Use the new image URL if uploaded
+
+            // *Delete the old image file if a new one is uploaded
+            const oldImagePath = oldDatas[0].image 
+            // console.log(oldImagePath)  // http://localhost:3000/1745145111359-Email Trick.jpg
+            const lengthOfUnwanted = "http://localhost:3000/".length
+            // console.log(lengthOfUnwanted) 
+            const fileNameInStorageFolder = oldImagePath.slice(lengthOfUnwanted)
+            console.log(fileNameInStorageFolder) // 1745145111359-Email Trick.jpg
+      
+            fs.unlink("storage/" + fileNameInStorageFolder, (err) => {
+                if(err){
+                  console.error('Error deleting image:', err);
+                }else{
+                  console.log('Image deleted successfully');
+                }
+            });
+
+    }else{
+      fileUrl = oldDatas[0].image 
     }
+
+    // // Check if the authenticated user is the owner of the blog
+    // if (blog.userId !== req.user[0].id) {
+    //   return res.status(403).send('You are not authorized to update this blog');
+    // }
       const { title, subtitle, description } = req.body;
       const update = {
           title: title,
           subtitle: subtitle,
-          description: description
+          description: description,
+          image: fileUrl
       };
-      if (req.file) {
-          update.image = req.file.filename;
-      }
+      // if (req.file) {
+      //     update.image = req.file.filename;
+      // }
       await blogs.update(update, { where: { id: id } });
+
       res.redirect(`/blog/${id}`);
   } catch (error) {
       console.error('Error in updateBlog:', error);
