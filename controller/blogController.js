@@ -189,11 +189,18 @@ exports.createBlog = async (req, res) => {
     // const userId = req.userId // Get the user ID from the request object
   try {
       const { title, subtitle, description } = req.body;
+      const image = req.file.filename; 
+
+      //ser side validation
+      if (!title || !subtitle || !description || !image) {
+          return res.send('All fields are required');
+      }
+
       await blogs.create({
           title: title,
           subtitle: subtitle,
           description: description,
-          image: req.file.filename,
+          image: process.env.PROJECT_URL + image,
           userId: userId // Associate the blog with the user ID
       });
       res.redirect('/');

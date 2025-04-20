@@ -60,6 +60,11 @@ app.use(express.urlencoded({extended:true})) // Middleware to parse URL-encoded 
 // http://localhost:3000/ + /register
 // http://localhost:3000/ + /login
 
+app.use((req, res, next) => { // Middleware to log the request method and URL
+      res.locals.currentUser = req.cookies.token // Set the current user in the response locals for use in views
+      next(); // Call the next middleware or route handler in the stack
+  });                    
+
 app.use('/',blogRoute) // Use the blogRoute for handling blog-related routes
 app.use('/',authRoute) // Use the authRoute for handling authentication-related routes
 

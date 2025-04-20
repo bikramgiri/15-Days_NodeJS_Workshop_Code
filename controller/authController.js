@@ -94,13 +94,8 @@ exports.login = async(req,res)=>{
 }
 
 exports.logout = (req,res)=>{
-  req.session.destroy((err) => { // Destroy the session
-    if (err) {
-        console.error('Error destroying session:', err); // Log any errors that occur during session destruction
-        return res.status(500).send('Internal Server Error'); // Send an error response
-    }
-    res.redirect('/login'); // Redirect to login page after logout
-});
+  res.clearCookie("token") // Clear the token cookie from the response
+  res.redirect("/login") // Redirect to the login page after logout
 }
 
 

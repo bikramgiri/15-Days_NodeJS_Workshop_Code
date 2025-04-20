@@ -10,15 +10,19 @@
       <nav class="navbar">
             <div class="logo">
               <a href="/">CMS</a>
-            </div>
+            </div> 
             <ul class="nav-links">
+              <% if(currentUser){ %>
               <li><a href="/">Home</a></li>
               <li><a href="/create">Add Blog</a></li>
               <li><a href="/myblogs">My Blogs</a></li>
+              <li><a href="/logout">Logout</a></li>
+              <% }else{ %>
+              <li><a href="/">Home</a></li>
               <li><a href="/login">Login</a></li>
               <li><a href="/register">Register</a></li>
-              <li><a href="/logout">Logout</a></li>
+              <% } %>
             </ul>
-          </nav>
+      </nav>
 </body>
 </html>

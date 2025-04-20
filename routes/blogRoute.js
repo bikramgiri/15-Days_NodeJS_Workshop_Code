@@ -9,8 +9,8 @@ router.route("/").get(homePage)
 router.route("/blog/:id").get(singleBlog)
 router.route("/delete/:id").get(isAuthenticated,deleteBlog)
 router.route("/edit/:id").get(isAuthenticated,editBlog)
-router.route("/update/:id").post(upload.single("image"),isAuthenticated,updateBlog)
-router.route("/create").get(createBlogPage).post(upload.single("image"),isAuthenticated,createBlog)
+router.route("/update/:id").post(isAuthenticated,upload.single("image"),updateBlog)
+router.route("/create").get(isAuthenticated,createBlogPage).post(isAuthenticated,upload.single("image"),createBlog)
 router.route("/myblogs").get(isAuthenticated,myBlogPage)
 
 module.exports = router; 
