@@ -1,6 +1,7 @@
 const { blogs, sequelize, users } = require('../model/index')
 const bcrypt = require('bcryptjs') 
 const jwt = require('jsonwebtoken') 
+const sendEmail = require('../services/sendEmail')
 
 exports.registerPage = (req,res)=>{
       res.render("register")
@@ -96,6 +97,50 @@ exports.login = async(req,res)=>{
 exports.logout = (req,res)=>{
   res.clearCookie("token") // Clear the token cookie from the response
   res.redirect("/login") // Redirect to the login page after logout
+}
+
+// forgot Password
+exports.forgotPassword = (req,res)=>{
+  res.render("forgotPassword")
+}
+
+exports.checkForgotPassword = async (req,res)=>{
+  const email = req.body.email
+  if(!email){
+    return res.send("Please provide email")
+  }
+  
+  // *for all email: tyo email ma otp pathaunae
+  const allUsers = await users.findAll() // Get all users from the database
+
+  // if email -> users table check with that email exists or not
+  const emailExists = await users.findAll({
+    where : {
+      email : email
+    }
+  })
+  if(emailExists.length == 0){ // If the email does not exist, return an error response
+    return res.send("Email not found")
+  }else{
+
+    // // *for all email: tyo email ma otp pathaunae
+    // for(let i = 0; i < allUsers.length; i++){
+    //   await sendEmail({
+    //     email : allUsers[i].email,
+    //     subject : "OTP for password reset",
+    //     otp : Math.floor(100000 + Math.random() * 900000) // Generate a random 6-digit OTP
+    //   })
+    // }
+
+    // *for one email: tyo email ma otp pathaunae
+    await sendEmail({
+      email : email,
+      subject : "OTP for password reset",
+      otp : Math.floor(100000 + Math.random() * 900000) // Generate a random 6-digit OTP
+    })
+
+    res.send("OTP sent to your email") 
+  }
 }
 
 

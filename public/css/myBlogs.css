@@ -13,7 +13,7 @@
     }
     
     /* Navigation Bar Styles */
-    .navbar {
+    /* .navbar {
       background-color: #333;
       color: #fff;
       padding: 1rem;
@@ -48,7 +48,7 @@
     .navbar .nav-links a:hover {
       background-color: #575757;
       border-radius: 4px;
-    }
+    } */
     
     /* Container for the cards */
     .container {

@@ -1,3 +1,5 @@
+// *Useful in all project
+
 const multer = require('multer') // format: ecma script module
 
 const storage = multer.diskStorage({

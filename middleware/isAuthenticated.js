@@ -1,3 +1,5 @@
+// *Useful in all project
+
 const jwt = require("jsonwebtoken")
 // const promisify = require("util").promisify 
 // or

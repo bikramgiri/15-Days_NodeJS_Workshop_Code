@@ -13,7 +13,7 @@
     }
     
     /* Navbar styling */
-    .navbar {
+    /* .navbar {
       background-color: #333;
       color: white;
       padding: 1rem 0;
@@ -48,7 +48,7 @@
     
     .nav-links a:hover {
       color: #ffcc00;
-    }
+    } */
     
     /* Form section styling */
     .form-container {
@@ -57,6 +57,7 @@
       margin: 3rem auto;
       padding: 2rem;
       border-radius: 8px;
+      margin-top: 100px;
       box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
     }
     
@@ -114,6 +115,7 @@
     .login-link a {
       color: #007bff;
       text-decoration: none;
+      font-weight: bold;
     }
     
     .login-link a:hover {
