@@ -122,6 +122,7 @@ exports.checkForgotPassword = async (req,res)=>{
   if(emailExists.length == 0){ // If the email does not exist, return an error response
     return res.send("Email not found")
   }else{
+    const generateOtp = Math.floor(100000 + Math.random() * 900000) // Generate a random 6-digit OTP
 
     // // *for all email: tyo email ma otp pathaunae
     // for(let i = 0; i < allUsers.length; i++){
@@ -136,13 +137,60 @@ exports.checkForgotPassword = async (req,res)=>{
     await sendEmail({
       email : email,
       subject : "OTP for password reset",
-      otp : Math.floor(100000 + Math.random() * 900000) // Generate a random 6-digit OTP
+      otp : generateOtp // Generate a random 6-digit OTP
     })
 
-    res.send("OTP sent to your email") 
+    // save the otp in the database
+    emailExists[0].otp = generateOtp
+    emailExists[0].otpGeneratedTime = Date.now()  // Set the OTP generated time to the current time
+    await emailExists[0].save() // Save the updated user information to the database
+
+    res.redirect("/verifyOtp?email=" + email) // Redirect to the verifyOtp page with the email as a query parameter
   }
 }
 
+exports.verifyOtp = (req,res)=>{
+  const email = req.query.email // Get the email from the query parameter
+  res.render("verifyOtp", {email : email}) // Render the verifyOtp page with the email as a parameter
+}
+
+exports.checkVerifyOtp = async (req,res)=>{
+  const email = req.params.id // Get the email from the request parameters
+  const otp = req.body.otp // Get the OTP from the request body
+
+  if(!otp || !email){
+    return res.send("Please provide email and OTP") // Check if both email and OTP are provided
+  }
+
+  const userData = await users.findAll({
+    where : {
+      email : email,
+      otp : otp
+    }
+  })
+  if(userData.length == 0){ // If the OTP does not match, return an error response
+    return res.send("Invalid OTP")
+  }else{
+    const currentTime = Date.now() // Get the current time
+    const otpGeneratedTime = userData[0].otpGeneratedTime // Get the OTP generated time from the database
+    const timeDiff = currentTime - otpGeneratedTime // Calculate the time difference between the current time and the OTP generated time
+
+    if(timeDiff > 2*60*1000){ // If the OTP is older than 2 minutes, return an error response
+      return res.send("OTP was expired")
+    }else{
+      userData[0].otp = null // Clear the OTP in the database
+      userData[0].otpGeneratedTime = null // Clear the OTP generated time in the database
+      await userData[0].save() // Save the updated user information to the database
+      
+      res.redirect("/passwordChange")
+    }
+  }
+}
+
+
+exports.passwordChange = (req,res)=>{
+  res.render("passwordChange")
+}
 
 
 

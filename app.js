@@ -18,6 +18,7 @@ const cookieParser = require('cookie-parser') // Import the cookie-parser module
 // Routes for handling different endpoints
 const blogRoute = require("./routes/blogRoute")
 const authRoute = require("./routes/authRoute") 
+const { decode } = require('jsonwebtoken')
 
 app.set('view engine','ejs') // Set the view engine to ejs
 require("./model/index") // Import the database connection and models from the index.js file in the model folder
@@ -60,8 +61,19 @@ app.use(express.urlencoded({extended:true})) // Middleware to parse URL-encoded 
 // http://localhost:3000/ + /register
 // http://localhost:3000/ + /login
 
-app.use((req, res, next) => { // Middleware to log the request method and URL
+app.use(async(req, res, next) => { // Middleware to log the request method and URL
       res.locals.currentUser = req.cookies.token // Set the current user in the response locals for use in views
+      const token = req.cookies.token // Get the token from the cookies
+      if (token) {
+              try {
+                    const decryptedResult = await decode(token, process.env.JWT_SECRETKEY) // Decode the token using the secret key
+                    if (decryptedResult && decryptedResult.id) {
+                        res.locals.currentUserId = decryptedResult.id // Set the current user ID in the response locals
+                    }
+              } catch (err) {
+                    console.error('Token verification error:', err) // Log any errors that occur during token verification
+              }
+        }
       next(); // Call the next middleware or route handler in the stack
   });                    
 

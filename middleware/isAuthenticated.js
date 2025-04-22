@@ -5,6 +5,8 @@ const jwt = require("jsonwebtoken")
 // or
 const {promisify} = require("util");
 const { users } = require("../model");
+const { decode } = require("punycode");
+const { decodeToken } = require("../services/decodeToken");
 
 exports.isAuthenticated = async (req, res, next) => {
   const token = req.cookies.token; // Get the token from the cookies
@@ -17,7 +19,7 @@ exports.isAuthenticated = async (req, res, next) => {
   }
   // Verify the token using the secret key and check if it is valid
   // Promisify handle call back function to avoid callback hell 
-  const decryptedResult = await promisify (jwt.verify) (token, process.env.JWT_SECRETKEY)
+  const decryptedResult = await decodeToken(token, process.env.JWT_SECRETKEY) // Decode the token using the secret key
 //   console.log(decryptedResult)
   
   // check if that id(userID) users table ma exists xa ki nai

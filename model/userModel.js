@@ -11,8 +11,15 @@ const makeUserTable = (sequelize,DataTypes)=>{
             password : {
                   type : DataTypes.STRING,
                   allowNull : false                
-            }
-            
+            },
+            otp : {
+                  type : DataTypes.STRING,
+                  allowNull : true                
+            },
+            otpGeneratedTime : {
+                  type : DataTypes.STRING,
+                  allowNull : true                
+            }            
       })
       return User // Return the Blog model
 }

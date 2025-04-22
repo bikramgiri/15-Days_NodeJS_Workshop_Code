@@ -26,9 +26,12 @@
       <!-- <button class="edit-button"><a href="/edit/<%- blog.id %>">Edit</a></button> -->
       <div class="blog-actions">
 
-        <button class="btn edit-btn"><a href="/edit/<%- blog.id %>">Edit</a></button>
-        <button class="btn delete-btn"><a href="/delete/<%- blog.id %>">Delete</a></button>
-
+        <% if(currentUser){ %>
+          <% if(currentUserId == blog.user.id){ %>
+            <button class="btn edit-btn"><a href="/edit/<%- blog.id %>">Edit</a></button>
+            <button class="btn delete-btn"><a href="/delete/<%- blog.id %>">Delete</a></button>
+            <% } %>
+            <% } %>
       </div>
     </div>
   </div>
