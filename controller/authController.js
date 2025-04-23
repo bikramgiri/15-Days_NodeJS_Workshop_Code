@@ -178,19 +178,85 @@ exports.checkVerifyOtp = async (req,res)=>{
     if(timeDiff > 2*60*1000){ // If the OTP is older than 2 minutes, return an error response
       return res.send("OTP was expired")
     }else{
-      userData[0].otp = null // Clear the OTP in the database
-      userData[0].otpGeneratedTime = null // Clear the OTP generated time in the database
-      await userData[0].save() // Save the updated user information to the database
+      // userData[0].otp = null // Clear the OTP in the database
+      // userData[0].otpGeneratedTime = null // Clear the OTP generated time in the database
+      // await userData[0].save() // Save the updated user information to the database
       
-      res.redirect("/passwordChange")
+      // res.redirect("/passwordChange?email=" + email) // Redirect to the passwordChange page with the email as a query parameter
+      res.redirect(`/passwordChange?email=${email}&otp=${otp}`) // Redirect to the passwordChange page with the email and OTP as query parameters
     }
   }
 }
 
 
 exports.passwordChange = (req,res)=>{
-  res.render("passwordChange")
+  const email = req.query.email 
+  const otp = req.query.otp
+  if(!email || !otp){ // Check if both email and OTP are provided
+    return res.send("Please provide email and OTP in the query parameters") // If not, return an error response
+  }
+
+  res.render("passwordChange", {email : email, otp : otp})
 }
 
+exports.checkPasswordChange = async (req,res)=>{
+  const newPassword = req.body.newPassword // Get the new password from the request body
+  const confirmNewPassword = req.body.confirmNewPassword // Get the confirm password from the request body
+  const email = req.params.email // Get the email from the query parameter
+  const otp = req.params.otp // Get the OTP from the query parameter
+  if(!newPassword || !confirmNewPassword || !email || !otp ){ // Check if all required fields are provided
+    return res.send("Please provide newPassowrd, confirmNewPassword, email and OTP") // If not, return an error response
+  }
+
+  // checking if that email otp or not
+  const userData = await users.findAll({
+    where : {
+      email : email,
+      otp : otp
+    }
+  })
+
+  if(userData.length == 0){ // If the OTP does not match, return an error response
+    return res.send("Donot try this, Invalid OTP")
+  }else{
+    const currentTime = Date.now() // Get the current time
+    const otpGeneratedTime = userData[0].otpGeneratedTime // Get the OTP generated time from the database
+    const timeDiff = currentTime - otpGeneratedTime // Calculate the time difference between the current time and the OTP generated time
+
+    if(timeDiff > 3*60*1000){ // If the OTP is older than 2 minutes, return an error response
+      // return res.send("Since OTP is expired, you dont able to change password") // If the OTP is expired, return an error response
+      res.redirect("/forgotPassword") // Redirect to the forgot password page
+    }else{
+      // userData[0].otp = null // Clear the OTP in the database
+      // userData[0].otpGeneratedTime = null // Clear the OTP generated time in the database
+      // await userData[0].save() // Save the updated user information to the database
+      
+      if(newPassword !== confirmNewPassword){ // Check if the new password and confirm password match
+            return res.send("newPassword and confirmNewPassword do not match") // If they do not match, return an error response
+          }else{
+            userData[0].password = bcrypt.hashSync(newPassword, 10) // Hash the new password and update it in the database
+            await userData[0].save() // Save the updated user information to the database
+            
+            res.redirect("/login") // Redirect to the login page after password change
+        }
+    }
+  }
+  
+// *OR
+
+//   if(userData.length == 0){ // If the OTP does not match, return an error response
+//     return res.send("Donot try this, Invalid OTP") // If the OTP is invalid, return an error response
+//   }
+
+//   if(newPassword !== confirmNewPassword){ // Check if the new password and confirm password match
+//     return res.send("newPassword and confirmNewPassword do not match") // If they do not match, return an error response
+//   }else{
+//     userData[0].password = bcrypt.hashSync(newPassword, 10) // Hash the new password and update it in the database
+//     await userData[0].save() // Save the updated user information to the database
+    
+//     res.redirect("/login") // Redirect to the login page after password change
+// }
+
+}
 
 

@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken")
 // or
 const {promisify} = require("util");
 const { users } = require("../model");
-const { decode } = require("punycode");
+// const { decode } = require("punycode");
 const { decodeToken } = require("../services/decodeToken");
 
 exports.isAuthenticated = async (req, res, next) => {

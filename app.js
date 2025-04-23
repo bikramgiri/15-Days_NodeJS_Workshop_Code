@@ -19,6 +19,8 @@ const cookieParser = require('cookie-parser') // Import the cookie-parser module
 const blogRoute = require("./routes/blogRoute")
 const authRoute = require("./routes/authRoute") 
 const { decode } = require('jsonwebtoken')
+const { decodeToken } = require("./services/decodeToken")
+
 
 app.set('view engine','ejs') // Set the view engine to ejs
 require("./model/index") // Import the database connection and models from the index.js file in the model folder
@@ -66,7 +68,7 @@ app.use(async(req, res, next) => { // Middleware to log the request method and U
       const token = req.cookies.token // Get the token from the cookies
       if (token) {
               try {
-                    const decryptedResult = await decode(token, process.env.JWT_SECRETKEY) // Decode the token using the secret key
+                    const decryptedResult = await decodeToken(token, process.env.JWT_SECRETKEY) // Decode the token using the secret key
                     if (decryptedResult && decryptedResult.id) {
                         res.locals.currentUserId = decryptedResult.id // Set the current user ID in the response locals
                     }
