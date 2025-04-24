@@ -15,6 +15,10 @@ const { login, loginPage, register, registerPage } = require('./controller/authC
 const app = express() // Create an instance of express
 const cookieParser = require('cookie-parser') // Import the cookie-parser module for parsing cookies
 
+// require express-session and connect-flash for flash messages
+const session = require('express-session')
+const flash = require('connect-flash')
+
 // Routes for handling different endpoints
 const blogRoute = require("./routes/blogRoute")
 const authRoute = require("./routes/authRoute") 
@@ -24,6 +28,14 @@ const { decodeToken } = require("./services/decodeToken")
 
 app.set('view engine','ejs') // Set the view engine to ejs
 require("./model/index") // Import the database connection and models from the index.js file in the model folder
+
+app.use(session({ // Middleware for session management
+      secret: process.env.SESSION_SECRET, // Secret key for signing the session ID cookie
+      resave: false, // Don't save session if unmodified
+      saveUninitialized: false, // Don't create session until something stored
+}))
+
+app.use(flash()) // Middleware for flash messages
 
 app.use(cookieParser()) // Middleware to parse cookies in the request
 app.use(express.json()) // Middleware to parse JSON data in request bodies,  frontend and backend are different servers

@@ -32,7 +32,8 @@ exports.register = async(req,res)=>{
 }
 
 exports.loginPage = (req,res)=>{
-      res.render("login")
+  const error = req.flash("error") 
+  res.render("login", {error: error}) // Render the login page with any error messages from the flash session
 }
 
 exports.login = async(req,res)=>{
@@ -76,9 +77,12 @@ exports.login = async(req,res)=>{
     })
 
     // return res.status(200).send("Login successful") 
+    req.flash("success","Login successful") // Set a success message in the flash session
     res.redirect("/")
   }else{
-    return res.status(401).send("Invalid password") // If the password is invalid, return an error response
+    // return res.status(401).send("Invalid password") // If the password is invalid, return an error response
+    req.flash("error","Invalid password") // Set an error message in the flash session
+    res.redirect("/login") // Redirect to the login page
   }
   }
    

@@ -12,6 +12,7 @@
 
     <!-- Main Content -->
     <div class="container">
+        <p id="success" style="text-align: center; color: green;";"><%- success %></p>
         <% blogs.forEach(function(blog){ %>
             <div class="card">
                 <img src="<%- blog.image %>" alt="Image">
@@ -29,6 +30,12 @@
 
     <!-- Footer -->
     <%- include('./footer.ejs') %>
-
+    <script>
+        // Hide success message after 3 seconds
+        const success = document.getElementById('success');
+        setTimeout(() => {
+            success.style.display = 'none';
+        }, 3000);
+    </script>
 </body>
 </html>

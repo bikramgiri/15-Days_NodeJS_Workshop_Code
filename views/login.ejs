@@ -12,6 +12,7 @@
 
     <!-- Form Section -->
     <section class="form-container">
+        <p id="error" style="text-align: center; color: red;"><%- error %></p>
         <h1>Login Here</h1>
         <form action="/login" method="post">
             
@@ -29,6 +30,14 @@
 
     <!-- Footer -->
     <%- include('./footer.ejs') %>
+
+    <script>
+        // Hide error message after 3 seconds
+        const error = document.getElementById('error');
+        setTimeout(() => {
+            error.style.display = 'none';
+        }, 3000);
+    </script>
 
 </body>
 </html>

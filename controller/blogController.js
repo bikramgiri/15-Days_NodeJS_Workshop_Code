@@ -8,6 +8,7 @@ const bcrypt = require('bcryptjs')
 // }
 
 exports.homePage = async (req, res) => {
+  const success = req.flash('success'); 
   try {
       const datas = await blogs.findAll({
         include : 
@@ -18,7 +19,7 @@ exports.homePage = async (req, res) => {
       });
     //  console.log(datas, "datas from homePage")
 
-      res.render('home', { blogs: datas });
+      res.render('home', { blogs: datas, success: success }); // Pass the blogs data to the home view
   } catch (error) {
       console.error('Error in homePage:', error);
       res.status(500).send('Internal Server Error');
