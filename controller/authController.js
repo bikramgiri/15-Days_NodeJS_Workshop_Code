@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken') 
 const sendEmail = require('../services/sendEmail')
 
+// **Register page
 exports.registerPage = (req,res)=>{
       res.render("register")
 }
@@ -31,6 +32,7 @@ exports.register = async(req,res)=>{
   res.redirect("/login")
 }
 
+// **Login page
 exports.loginPage = (req,res)=>{
   const error = req.flash("error") 
   res.render("login", {error: error}) // Render the login page with any error messages from the flash session
@@ -98,6 +100,7 @@ exports.login = async(req,res)=>{
   // res.redirect("/")
 }
 
+// **Logout
 exports.logout = (req,res)=>{
   res.clearCookie("token") // Clear the token cookie from the response
   res.redirect("/login") // Redirect to the login page after logout

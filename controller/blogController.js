@@ -260,7 +260,8 @@ exports.createBlog = async (req, res) => {
 };
 
 exports.myBlogPage = async(req, res) => {
-// get this users blogs only
+  try {
+    // get this users blogs only
 const userId = req.userId;
 // find blogs of this userId
 const myBlogs = await blogs.findAll({
@@ -269,5 +270,9 @@ const myBlogs = await blogs.findAll({
     }
 })
 res.render("myBlogs.ejs",{myBlogs : myBlogs})
+  } catch {
+      console.error('Error in myBlogPage:', error);
+      res.status(500).send('Internal Server Error');
+  }
 }
 
