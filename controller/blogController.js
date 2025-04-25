@@ -1,6 +1,13 @@
-const { blogs, sequelize, users } = require('../model/index')
+const { blogs, sequelize, users } = require('../model/index')  // sequelize, blogs, users are imported from model/index.js file
 const fs = require('fs') // File system module to delete files
 const bcrypt = require('bcryptjs') 
+
+// *Raw Queries using sequelize
+// const db = require('../model/index') // Import the database connection and models
+// const sequelize = db.sequelize // Get the sequelize instance from the db object
+// OR
+// require, sequelize in first line
+
 
 // exports.homePage = async(req,res)=>{ 
 //   const datas = await blogs.findAll() // blogs return on array of objects
@@ -17,7 +24,11 @@ exports.homePage = async (req, res) => {
             as: 'user' // Include the users model
         } 
       });
-    //  console.log(datas, "datas from homePage")
+
+    // **OR (Raw Queries using sequelize)
+    // const datas = await sequelize.query("SELECT * FROM blogs", { // Raw SQL query to join blogs and users tables
+    //   type: sequelize.QueryTypes.SELECT // Specify the query type as SELECT
+    // });
 
       res.render('home', { blogs: datas, success: success }); // Pass the blogs data to the home view
   } catch (error) {
@@ -42,6 +53,14 @@ exports.singleBlog = async (req, res) => {
                   as: 'user'
               }
       });
+
+      // **OR (Raw Queries using sequelize)
+      // const blog = await sequelize.query("SELECT * FROM blogs JOIN users ON blogs.id = users.id WHERE blogs.id = ?", {
+      //     replacements: [id], // Replace the placeholder with the actual id value
+      //     type: sequelize.QueryTypes.SELECT // Specify the query type as SELECT
+      // });
+
+
       if (!blog) return res.status(404).send('Blog not found');
       res.render('singleBlog', { 
         blog: blog,
