@@ -1,22 +1,5 @@
 // ** Code for handling errors asynchoronous 
 
-// const handleError = (fn)=>{
-//       return(req, res, next)=>{
-//             fn(req. res, next).catch((error)=>{
-//                   return res.json({
-//                         status: 500,
-//                         message: error.message,
-//                         fullError: error
-//                   })
-//             })
-//       }
-      
-// }
-
-// module.exports = handleError
-
-// **OR
-
 module.exports = (fn)=>{
       return(req, res, next)=>{
             fn(req, res, next).catch((error)=>{
@@ -34,3 +17,23 @@ module.exports = (fn)=>{
       }
       
 }
+
+
+
+// **OR
+
+// const handleError = (fn)=>{
+//       return(req, res, next)=>{
+//             fn(req. res, next).catch((error)=>{
+//                   return res.json({
+//                         status: 500,
+//                         message: error.message,
+//                         fullError: error
+//                   })
+//             })
+//       }
+      
+// }
+
+// module.exports = handleError
+
