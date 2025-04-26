@@ -264,31 +264,31 @@ exports.createBlog = async (req, res) => {
           return res.send('All fields are required');
       }
 
-      // await blogs.create({
-      //     title: title,
-      //     subtitle: subtitle,
-      //     description: description,
-      //     image: process.env.PROJECT_URL + image,
-      //     userId: userId // Associate the blog with the user ID
-      // });
+      await blogs.create({
+          title: title,
+          subtitle: subtitle,
+          description: description,
+          image: process.env.PROJECT_URL + image,
+          userId: userId // Associate the blog with the user ID
+      });
 
       
       // **OR
       // **Raw Queries using sequelize to make separate blog table for each user
-      await sequelize.query(`CREATE TABLE IF NOT EXISTS blog_${userId} (
-          id INT PRIMARY KEY AUTO_INCREMENT,
-          title VARCHAR(255) NOT NULL,
-          subtitle VARCHAR(255) NOT NULL,
-          description TEXT NOT NULL,
-          image VARCHAR(255) NOT NULL,
-          userId INT NOT NULL,
-          FOREIGN KEY (userId) REFERENCES users(id)
-      )`, { type: sequelize.QueryTypes.CREATE }); // Create the blogs table if it doesn't exist
+      // await sequelize.query(`CREATE TABLE IF NOT EXISTS blog_${userId} (
+      //     id INT PRIMARY KEY AUTO_INCREMENT,
+      //     title VARCHAR(255) NOT NULL,
+      //     subtitle VARCHAR(255) NOT NULL,
+      //     description TEXT NOT NULL,
+      //     image VARCHAR(255) NOT NULL,
+      //     userId INT NOT NULL,
+      //     FOREIGN KEY (userId) REFERENCES users(id)
+      // )`, { type: sequelize.QueryTypes.CREATE }); // Create the blogs table if it doesn't exist
 
-      await sequelize.query(`INSERT INTO blog_${userId} (title, subtitle, description, image, userId) VALUES (?, ?, ?, ?, ?)`, {
-          replacements: [title, subtitle, description, process.env.PROJECT_URL + image, userId], // Replace the placeholders with actual values
-          type: sequelize.QueryTypes.INSERT // Specify the query type as INSERT
-      });
+      // await sequelize.query(`INSERT INTO blog_${userId} (title, subtitle, description, image, userId) VALUES (?, ?, ?, ?, ?)`, {
+      //     replacements: [title, subtitle, description, process.env.PROJECT_URL + image, userId], // Replace the placeholders with actual values
+      //     type: sequelize.QueryTypes.INSERT // Specify the query type as INSERT
+      // });
 
 
       res.redirect('/');
