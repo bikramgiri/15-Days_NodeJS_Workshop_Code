@@ -15,9 +15,20 @@ const { login, loginPage, register, registerPage } = require('./controller/authC
 const app = express() // Create an instance of express
 const cookieParser = require('cookie-parser') // Import the cookie-parser module for parsing cookies
 
-// require express-session and connect-flash for flash messages
+// **Websecurity
+const sanitizeHtml = require('sanitize-html') // Import the sanitize-html module for sanitizing HTML input
+const rateLimit = require('express-rate-limit') // Import the express-rate-limit module for rate limiting
+const helmet = require('helmet') // Import the helmet module for securing HTTP headers
+
+app.use(helmet()) // Use helmet middleware to secure HTTP headers
+
+//**equire express-session and connect-flash for flash messages
 const session = require('express-session')
 const flash = require('connect-flash')
+
+// **Websecurity Test
+// const result = sanitizeHtml("<strong>Hello World!</strong>")
+// console.log(result) // Output: <p>Hello World!</p> (sanitized HTML)
 
 // Routes for handling different endpoints
 const blogRoute = require("./routes/blogRoute")
@@ -28,6 +39,28 @@ const { decodeToken } = require("./services/decodeToken")
 
 app.set('view engine','ejs') // Set the view engine to ejs
 require("./model/index") // Import the database connection and models from the index.js file in the model folder
+
+
+// **Websecurity 
+const rateLimiter = rateLimit({ // Middleware for rate limiting
+      windowMs: 2 * 60 * 1000, // 2 minutes
+      max: 2, // Limit each IP to 2 requests per windowMs
+      standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+      legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+      message: "Too many requests, please try again later."
+})
+
+// **OR
+// app.use(rateLimit({ // Middleware for rate limiting
+//       windowMs: 15 * 60 * 1000, // 15 minutes
+//       max: 100, // Limit each IP to 100 requests per windowMs
+//       standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+//       legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+//       message: "Too many requests, please try again later."
+// }))
+
+app.use("/forgotPassword",rateLimiter) // Use the rate limiter middleware to all requests
+
 
 app.use(session({ // Middleware for session management
       secret: process.env.SESSION_SECRET, // Secret key for signing the session ID cookie
